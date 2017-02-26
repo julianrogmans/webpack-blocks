@@ -5,7 +5,7 @@
  */
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const common = require('@webpack-blocks/webpack-common')
+const getLoaderConfigByType = require('@webpack-blocks/webpack-common').getLoaderConfigByType
 
 module.exports = extractText
 
@@ -19,8 +19,7 @@ function extractText (outputFilePattern, fileType) {
   fileType = fileType || 'text/css'
 
   return (context, webpackConfig) => {
-    const loaderConfig = common.getLoaderConfigByType(context, webpackConfig, fileType)
-    const nonStyleLoaders = common.getNonStyleLoaders(loaderConfig, fileType)
+    const loaderConfig = getLoaderConfigByType(context, webpackConfig, fileType)
 
     return {
       module: {
@@ -28,7 +27,7 @@ function extractText (outputFilePattern, fileType) {
           {
             test: context.fileType(fileType),
             exclude: loaderConfig.exclude,
-            loader: ExtractTextPlugin.extract('style-loader', nonStyleLoaders),
+            loader: createExtractTextLoader(loaderConfig),
             loaders: undefined
           }
         ]
@@ -38,4 +37,19 @@ function extractText (outputFilePattern, fileType) {
       ]
     }
   }
+}
+
+function createExtractTextLoader (loaderConfig) {
+  if (/^style(-loader)?$/.test(loaderConfig.loaders[0])) {
+    return ExtractTextPlugin.extract('style-loader', removeFirst(loaderConfig.loaders))
+  } else {
+    return ExtractTextPlugin.extract(loaderConfig.loaders)
+  }
+}
+
+function removeFirst (array) {
+  const arrayCopy = [].concat(array)
+  arrayCopy.shift()
+
+  return arrayCopy
 }

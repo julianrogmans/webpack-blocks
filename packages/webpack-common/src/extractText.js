@@ -5,8 +5,7 @@
  */
 
 export {
-  getLoaderConfigByType,
-  getNonStyleLoaders
+  getLoaderConfigByType
 }
 
 /**
@@ -22,34 +21,11 @@ function getLoaderConfigByType (context, webpackConfig, fileType) {
     (loader) => String(loader.test) === String(context.fileType(fileType))
   )
 
-  if (loaderConfig) {
-    return loaderConfig
-  } else {
+  if (!loaderConfig) {
     throw new Error(`${fileType} loader could not be found in webpack config.`)
+  } else if (!loaderConfig.loaders || loaderConfig.loaders.length === 0) {
+    throw new Error(`No loaders set up for ${fileType}.`)
+  } else {
+    return loaderConfig
   }
-}
-
-/**
- * Finds the loader config for the given `fileType` and returns all loaders
- * except the `style-loader` which is expected to be the first loader.
- *
- * @param {object}  context
- * @param {object}  webpackConfig
- * @param {string}  fileType
- * @return {string[]}
- * @throws {Error}
- */
-function getNonStyleLoaders (loaderConfig, fileType) {
-  if (!loaderConfig.loaders || loaderConfig.loaders.length === 0) {
-    throw new Error(`No ${fileType} file loaders found.`)
-  }
-  if (!/^style(-loader)?$/.test(loaderConfig.loaders[0])) {
-    throw new Error(`Expected "style-loader" to be first loader of .css files. Instead got: ${loaderConfig.loaders[0]}`)
-  }
-
-  // `loaderConfig.loaders` without the leading 'style-loader'
-  const nonStyleLoaders = [].concat(loaderConfig.loaders)
-  nonStyleLoaders.shift()
-
-  return nonStyleLoaders
 }
