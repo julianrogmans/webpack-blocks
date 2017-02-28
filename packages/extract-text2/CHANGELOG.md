@@ -1,5 +1,9 @@
 # @webpack-blocks/extract-text2 - Changelog
 
+## Next release
+
+- Support for extracting non-style assets
+
 ## 0.4.0
 
 - Using updated `@webpack-blocks/webpack-common` to work with updated `webpack-merge`
