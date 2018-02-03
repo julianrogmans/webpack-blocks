@@ -21,6 +21,7 @@
     "@webpack-blocks/assets": "^1.0.0-rc",
     "@webpack-blocks/babel": "^1.0.0-rc",
     "@webpack-blocks/dev-server": "^1.0.0-rc",
+    "@webpack-blocks/elm": "^1.0.0-rc",
     "@webpack-blocks/extract-text": "^1.0.0-rc",
     "@webpack-blocks/postcss": "^1.0.0-rc",
     "@webpack-blocks/sass": "^1.0.0-rc",

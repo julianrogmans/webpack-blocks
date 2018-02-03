@@ -1,6 +1,7 @@
 const assets = require('@webpack-blocks/assets')
 const babel = require('@webpack-blocks/babel')
 const devServer = require('@webpack-blocks/dev-server')
+const elm = require('@webpack-blocks/elm')
 const extractText = require('@webpack-blocks/extract-text')
 const postcss = require('@webpack-blocks/postcss')
 const sass = require('@webpack-blocks/sass')
@@ -15,6 +16,7 @@ module.exports = Object.assign(
   {
     babel,
     devServer,
+    elm,
     extractText,
     postcss,
     sass,
